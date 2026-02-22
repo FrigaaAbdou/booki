@@ -1,0 +1,1503 @@
+<html lang="fr" dir="ltr"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booki | Plateforme de gestion et de prise de rendez-vous</title>
+    <meta name="description" content="Booki aide les entreprises de services en Algerie a gerer les rendez-vous, simplifier l'organisation et recevoir des demandes en ligne.">
+    <link rel="icon" type="image/png" href="assets/logo/mini-logo.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&amp;display=swap" rel="stylesheet">
+    <style>
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .lucide {
+            width: 1em;
+            height: 1em;
+            vertical-align: -0.125em;
+        }
+        .bidi-ltr {
+            direction: ltr;
+            unicode-bidi: isolate;
+            display: inline-block;
+        }
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        body.app-loading {
+            overflow: hidden;
+        }
+        body.app-loading > *:not(#page-loader) {
+            visibility: hidden;
+        }
+        #page-loader {
+            position: fixed;
+            inset: 0;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background:
+                radial-gradient(circle at 20% 20%, rgba(37, 99, 235, 0.08), transparent 45%),
+                radial-gradient(circle at 80% 30%, rgba(16, 185, 129, 0.08), transparent 45%),
+                #f8fafc;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 260ms ease, visibility 260ms ease;
+        }
+        #page-loader.is-hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+        .page-loader-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+            padding: 1.25rem 1.5rem;
+            border-radius: 1rem;
+            background: rgba(255, 255, 255, 0.82);
+            border: 1px solid #e5e7eb;
+            box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+            backdrop-filter: blur(6px);
+        }
+        .page-loader-logo {
+            height: 2.6rem;
+            width: auto;
+        }
+        .page-loader-spinner {
+            width: 2rem;
+            height: 2rem;
+            border-radius: 9999px;
+            border: 3px solid #dbeafe;
+            border-top-color: #2563eb;
+            border-right-color: #10b981;
+            animation: pageLoaderSpin 0.8s linear infinite;
+        }
+        @keyframes pageLoaderSpin {
+            to { transform: rotate(360deg); }
+        }
+        body.menu-open {
+            overflow: hidden;
+        }
+        .mobile-menu-overlay {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 200ms ease;
+        }
+        .mobile-menu-panel {
+            transform: translateX(-100%);
+            transition: transform 240ms ease;
+        }
+        body.menu-open .mobile-menu-overlay {
+            opacity: 1;
+            pointer-events: auto;
+        }
+        body.menu-open .mobile-menu-panel {
+            transform: translateX(0);
+        }
+        [dir="rtl"] .mobile-menu-panel {
+            left: auto;
+            right: 0;
+            transform: translateX(100%);
+        }
+        [dir="rtl"] body.menu-open .mobile-menu-panel {
+            transform: translateX(0);
+        }
+        .lang-menu summary::-webkit-details-marker {
+            display: none;
+        }
+        [dir="rtl"] .lang-menu > div {
+            right: auto;
+            left: 0;
+        }
+        @media (min-width: 768px) {
+            [dir="rtl"] .nav-row {
+                justify-content: flex-start;
+            }
+            [dir="rtl"] .nav-logo {
+                order: 1;
+            }
+            [dir="rtl"] .nav-actions {
+                order: 2;
+            }
+            [dir="rtl"] .nav-links {
+                order: 3;
+                margin-inline-start: auto;
+            }
+        }
+        @media (min-width: 1024px) {
+            [dir="rtl"] .hero-row {
+                flex-direction: row;
+                gap: 3rem;
+            }
+        }
+        [dir="rtl"] .hero-copy {
+            align-items: flex-end;
+            text-align: right;
+        }
+        [dir="rtl"] .hero-subtitle {
+            align-self: flex-end;
+            margin-left: auto;
+            margin-right: 0;
+            text-align: right;
+        }
+        [dir="rtl"] .hero-trust .avatar-stack {
+            direction: ltr;
+        }
+        @media (max-width: 639px) {
+            [dir="rtl"] .hero-cta {
+                width: min(100%, 22rem) !important;
+                align-self: flex-end;
+                margin-left: auto;
+                margin-right: 0;
+            }
+            [dir="rtl"] .hero-cta > a {
+                width: 100%;
+            }
+            [dir="rtl"] .hero-trust {
+                width: fit-content;
+                max-width: 100%;
+                align-self: flex-end;
+                margin-left: auto;
+                margin-right: 0;
+                justify-content: flex-end;
+            }
+        }
+        [dir="rtl"] input,
+        [dir="rtl"] select,
+        [dir="rtl"] textarea,
+        [dir="rtl"] label {
+            text-align: right;
+        }
+        @media (min-width: 640px) {
+            [dir="rtl"] .hero-cta,
+            [dir="rtl"] .hero-trust {
+                width: auto !important;
+                justify-content: flex-end;
+                align-self: flex-end;
+                margin-left: auto;
+                margin-right: 0;
+            }
+        }
+        /* Custom scrollbar for a polished feel */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f8fafc;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="app-loading bg-gray-50 text-slate-800 antialiased font-normal selection:bg-teal-200 selection:text-teal-900" aria-busy="true">
+
+    <div id="page-loader" role="status" aria-live="polite" aria-label="Loading page">
+        <div class="page-loader-card">
+            <img src="assets/logo/logo.png" alt="Booki logo" class="page-loader-logo">
+            <div class="page-loader-spinner" aria-hidden="true"></div>
+        </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/80 backdrop-blur-md z-50 border-b border-gray-100 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="nav-row flex justify-between items-center h-16">
+                <div class="nav-logo flex-shrink-0 flex items-center">
+                    <a href="#" class="flex items-center" aria-label="Accueil Booki" data-i18n-aria-label="nav.homeAria">
+                        <img src="assets/logo/logo.png" alt="Logo Booki" data-i18n-alt="brand.logoAlt" class="h-9 w-auto">
+                    </a>
+                </div>
+                <div class="nav-links hidden md:flex gap-8">
+                    <a href="#how-it-works" data-i18n="nav.howItWorks" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Comment ca marche</a>
+                    <a href="#features" data-i18n="nav.features" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Fonctionnalites</a>
+                    <a href="#industries" data-i18n="nav.industries" class="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors">Secteurs</a>
+                </div>
+                <div class="nav-actions flex items-center gap-3">
+                    <button id="mobile-menu-open" type="button" class="md:hidden w-10 h-10 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-slate-600 flex items-center justify-center" aria-label="Open menu" data-i18n-aria-label="nav.openMenuAria" aria-controls="mobile-menu-panel" aria-expanded="false">
+                        <i data-lucide="menu" class="text-lg"></i>
+                    </button>
+                    <details class="lang-menu relative hidden md:block">
+                        <summary class="list-none cursor-pointer w-10 h-10 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-slate-600 flex items-center justify-center leading-none">
+                            <i data-lucide="languages" class="text-lg block align-middle"></i>
+                        </summary>
+                        <div class="absolute right-0 top-12 w-44 rounded-xl border border-gray-200 bg-white shadow-lg p-2 z-50">
+                            <div data-i18n="nav.menuLabel" class="px-2 py-1 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Langue</div>
+                            <button type="button" data-lang="fr" class="w-full flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-gray-50">
+                                <span data-i18n="nav.langFr">FR</span>
+                                <span data-i18n="nav.activeBadge" class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">Actif</span>
+                            </button>
+                            <button type="button" data-lang="en" class="w-full mt-1 flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-gray-50">
+                                <span data-i18n="nav.langEn">EN</span>
+                                <span data-i18n="nav.availableBadge" class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">Disponible</span>
+                            </button>
+                            <button type="button" data-lang="ar" class="w-full mt-1 flex items-center justify-between px-3 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-gray-50">
+                                <span data-i18n="nav.langAr">العربية</span>
+                                <span data-i18n="nav.availableBadge" class="text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-500">Disponible</span>
+                            </button>
+                        </div>
+                    </details>
+                    <a href="#contact" class="hidden md:inline-flex whitespace-nowrap bg-blue-600 hover:bg-blue-700 text-white px-4 sm:px-5 py-2 rounded-xl text-xs sm:text-sm font-medium shadow-sm transition-all duration-300" data-i18n="nav.cta">
+                        Demander une demo
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div id="mobile-menu-overlay" class="mobile-menu-overlay fixed inset-0 bg-slate-900/40 z-[60] md:hidden" aria-hidden="true"></div>
+    <aside id="mobile-menu-panel" class="mobile-menu-panel fixed inset-y-0 left-0 w-[86vw] max-w-sm bg-white border-r border-gray-200 shadow-2xl z-[70] md:hidden flex flex-col" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="mobile-menu-title">
+        <div class="h-16 px-4 border-b border-gray-100 flex items-center justify-between">
+            <div id="mobile-menu-title" class="text-sm font-semibold text-slate-700" data-i18n="nav.mobileMenuTitle">Menu</div>
+            <button id="mobile-menu-close" type="button" class="w-10 h-10 rounded-xl border border-gray-200 bg-white hover:bg-gray-50 text-slate-600 flex items-center justify-center" aria-label="Close menu" data-i18n-aria-label="nav.closeMenuAria">
+                <i data-lucide="x" class="text-lg"></i>
+            </button>
+        </div>
+        <div class="flex-1 overflow-y-auto p-4">
+            <nav class="space-y-2">
+                <a href="#how-it-works" data-mobile-menu-close data-i18n="nav.howItWorks" class="block rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-gray-50 border border-transparent hover:border-gray-100">Comment ca marche</a>
+                <a href="#features" data-mobile-menu-close data-i18n="nav.features" class="block rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-gray-50 border border-transparent hover:border-gray-100">Fonctionnalites</a>
+                <a href="#industries" data-mobile-menu-close data-i18n="nav.industries" class="block rounded-xl px-4 py-3 text-sm font-medium text-slate-700 hover:bg-gray-50 border border-transparent hover:border-gray-100">Secteurs</a>
+            </nav>
+
+            <div class="mt-5 border-t border-gray-100 pt-5">
+                <div data-i18n="nav.menuLabel" class="px-1 mb-3 text-[11px] font-semibold uppercase tracking-wide text-slate-400">Langue</div>
+                <div class="grid grid-cols-3 gap-2">
+                    <button type="button" data-lang="fr" class="mobile-lang-btn px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-slate-600 bg-white">FR</button>
+                    <button type="button" data-lang="en" class="mobile-lang-btn px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-slate-600 bg-white">EN</button>
+                    <button type="button" data-lang="ar" class="mobile-lang-btn px-3 py-2 rounded-lg border border-gray-200 text-sm font-medium text-slate-600 bg-white" data-i18n="nav.langAr">العربية</button>
+                </div>
+            </div>
+        </div>
+        <div class="p-4 border-t border-gray-100">
+            <a href="#contact" data-mobile-menu-close data-i18n="nav.cta" class="w-full inline-flex items-center justify-center bg-blue-600 hover:bg-blue-700 text-white px-5 py-3 rounded-xl text-sm font-medium shadow-sm transition-all duration-300">
+                Demander une demo
+            </a>
+        </div>
+    </aside>
+
+    <!-- 1. Hero Section -->
+    <section class="relative pt-28 pb-16 md:pt-40 md:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto overflow-hidden">
+        <!-- Abstract Background Glows (Blue & Green Mix) -->
+        <div class="absolute inset-0 w-full h-full overflow-hidden -z-10 pointer-events-none">
+            <div class="absolute -top-[10%] -left-[10%] w-[50%] h-[60%] rounded-full bg-blue-400/10 blur-[100px]"></div>
+            <div class="absolute top-[20%] -right-[10%] w-[50%] h-[60%] rounded-full bg-emerald-400/10 blur-[100px]"></div>
+        </div>
+
+        <div class="hero-row flex flex-col lg:flex-row items-center gap-12 lg:gap-20 relative z-10">
+            <div class="hero-copy w-full lg:w-1/2 min-w-0 flex flex-col items-start text-left">
+                <h1 data-i18n="hero.title" class="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-semibold tracking-tight text-slate-900 leading-[1.15]">
+                    Gere votre activite. Laissez vos clients reserver en ligne.
+                </h1>
+                <p data-i18n="hero.subtitle" class="hero-subtitle mt-6 text-base sm:text-lg text-slate-600 leading-relaxed max-w-lg">
+                    Booki est une solution de reservation et de gestion pour les activites sur rendez-vous. Organisez vos rendez-vous, gagnez du temps et offrez une meilleure experience a vos clients.
+                </p>
+                <div class="hero-cta mt-8 flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
+                    <a href="#contact" data-i18n="hero.ctaPrimary" class="w-full sm:w-auto flex justify-center items-center bg-blue-600 hover:bg-blue-700 text-white px-6 py-3.5 rounded-xl text-base font-medium shadow-sm transition-all hover:shadow-md duration-300">
+                        Demander une demo
+                    </a>
+                    <a href="#" class="w-full sm:w-auto flex justify-center items-center gap-2 bg-white hover:bg-gray-50 text-slate-700 border border-gray-200 px-6 py-3.5 rounded-xl text-base font-medium shadow-sm transition-all">
+                        <i data-lucide="message-circle" class="text-emerald-500 text-xl"></i>
+                        <span data-i18n="hero.ctaWhatsapp">Parler sur WhatsApp</span>
+                    </a>
+                </div>
+                <div class="hero-trust mt-8 flex flex-wrap items-center gap-4 text-sm text-slate-500">
+                    <div class="avatar-stack flex -space-x-2">
+                        <div class="w-8 h-8 rounded-full bg-gray-200 border-2 border-white"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-300 border-2 border-white"></div>
+                        <div class="w-8 h-8 rounded-full bg-gray-400 border-2 border-white"></div>
+                    </div>
+                    <span data-i18n="hero.trustLine">Utilise par 500+ entreprises locales</span>
+                </div>
+            </div>
+            
+            <div class="w-full lg:w-1/2">
+                <img src="assets/hero-img.png" alt="Apercu du tableau de bord Booki" data-i18n-alt="hero.imageAlt" class="w-full h-auto">
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Problem Section -->
+    <section class="py-24 bg-gradient-to-br from-blue-100 via-teal-50 to-emerald-100 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 data-i18n="problem.title" class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+                    Vous gerez encore vos rendez-vous manuellement ?
+                </h2>
+                <p data-i18n="problem.subtitle" class="text-lg text-slate-600">
+                    Gerer une activite est deja difficile. Une organisation confuse des rendez-vous ne doit pas freiner votre croissance.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <!-- Card 1 -->
+                <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-100 flex flex-col items-start hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-red-50 text-red-500 flex items-center justify-center mb-4">
+                        <i data-lucide="message-square" class="text-2xl"></i>
+                    </div>
+                    <h3 data-i18n="problem.card1.title" class="text-base font-semibold text-slate-900 mb-2">Trop de messages WhatsApp</h3>
+                    <p data-i18n="problem.card1.text" class="text-sm text-slate-600 leading-relaxed">Des echanges sans fin pour trouver un seul horaire disponible pour un client.</p>
+                </div>
+                <!-- Card 2 -->
+                <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-100 flex flex-col items-start hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-orange-50 text-orange-500 flex items-center justify-center mb-4">
+                        <i data-lucide="phone-call" class="text-2xl"></i>
+                    </div>
+                    <h3 data-i18n="problem.card2.title" class="text-base font-semibold text-slate-900 mb-2">Appels rates et erreurs</h3>
+                    <p data-i18n="problem.card2.text" class="text-sm text-slate-600 leading-relaxed">Des clients perdus parce que vous n'avez pas repondu, ou des doubles reservations par erreur.</p>
+                </div>
+                <!-- Card 3 -->
+                <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-100 flex flex-col items-start hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-slate-200 text-slate-600 flex items-center justify-center mb-4">
+                        <i data-lucide="calendar" class="text-2xl"></i>
+                    </div>
+                    <h3 data-i18n="problem.card3.title" class="text-base font-semibold text-slate-900 mb-2">Pas de calendrier clair</h3>
+                    <p data-i18n="problem.card3.text" class="text-sm text-slate-600 leading-relaxed">Des carnets papier ou des tableaux confus que seule votre equipe comprend.</p>
+                </div>
+                <!-- Card 4 -->
+                <div class="bg-white/60 backdrop-blur-sm rounded-2xl p-6 border border-gray-100 flex flex-col items-start hover:shadow-lg transition-shadow">
+                    <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-500 flex items-center justify-center mb-4">
+                        <i data-lucide="bar-chart-3" class="text-2xl"></i>
+                    </div>
+                    <h3 data-i18n="problem.card4.title" class="text-base font-semibold text-slate-900 mb-2">Peu de visibilite sur le chiffre</h3>
+                    <p data-i18n="problem.card4.text" class="text-sm text-slate-600 leading-relaxed">Vous estimez vos revenus au lieu de savoir ce qui marche vraiment et ce qui rapporte le plus.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. How It Works -->
+    <section id="how-it-works" class="py-24 bg-gradient-to-b from-gray-50 to-teal-50/30 border-t border-gray-200 relative overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center max-w-2xl mx-auto mb-16">
+                <h2 data-i18n="how.title" class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+                    Comment Booki fonctionne
+                </h2>
+                <p data-i18n="how.subtitle" class="text-lg text-slate-600">
+                    Une experience simple du choix du rendez-vous jusqu'au suivi de l'activite.
+                </p>
+            </div>
+
+            <div class="flex flex-col lg:flex-row items-center gap-16">
+                <!-- Steps List -->
+                <div class="w-full lg:w-1/2 space-y-8 relative">
+                    <!-- Vertical connecting line -->
+                    <div class="absolute left-6 top-8 bottom-8 w-px bg-gray-200 hidden sm:block"></div>
+                    
+                    <div class="flex gap-6 relative z-10">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-gradient-to-r from-blue-600 to-emerald-500 text-white flex items-center justify-center text-lg font-semibold shadow-md">1</div>
+                        <div class="pt-2">
+                            <h3 data-i18n="how.step1.title" class="text-xl font-semibold tracking-tight text-slate-900 mb-2">Le client choisit le service et l'horaire</h3>
+                            <p data-i18n="how.step1.text" class="text-sm text-slate-600">Partagez votre lien Booki sur WhatsApp, Instagram ou votre site. Le client voit vos disponibilites et reserve en quelques clics.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-6 relative z-10">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-white border-2 border-teal-500 text-teal-600 flex items-center justify-center text-lg font-semibold">2</div>
+                        <div class="pt-2">
+                            <h3 data-i18n="how.step2.title" class="text-xl font-semibold tracking-tight text-slate-900 mb-2">Le rendez-vous est confirme automatiquement</h3>
+                            <p data-i18n="how.step2.text" class="text-sm text-slate-600">Le creneau se bloque dans votre calendrier et vous pouvez envoyer des rappels automatiques pour reduire les absences.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-6 relative z-10">
+                        <div class="flex-shrink-0 w-12 h-12 rounded-full bg-white border-2 border-gray-300 text-slate-400 flex items-center justify-center text-lg font-semibold">3</div>
+                        <div class="pt-2">
+                            <h3 data-i18n="how.step3.title" class="text-xl font-semibold tracking-tight text-slate-900 mb-2">Gerez tout depuis le tableau de bord</h3>
+                            <p data-i18n="how.step3.text" class="text-sm text-slate-600">Consultez votre planning, vos clients, vos services et votre activite depuis un seul outil simple.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Visuals -->
+                <div class="w-full lg:w-1/2 relative h-[420px] sm:h-[500px] overflow-hidden flex items-center justify-center">
+                    <!-- Background Blob/Shape -->
+                    <div class="absolute inset-0 bg-gradient-to-tr from-blue-100 to-emerald-100 rounded-[3rem] transform rotate-3 scale-95 opacity-50"></div>
+                    
+                    <!-- Mobile Mockup (Foreground) -->
+                    <div class="relative z-20 w-[220px] h-[440px] sm:w-[240px] sm:h-[480px] bg-white rounded-[2rem] border-[6px] border-slate-900 shadow-2xl overflow-hidden flex flex-col transform sm:-translate-x-12">
+                        <div class="h-16 bg-gradient-to-r from-blue-600 to-emerald-500 flex flex-col justify-end p-4 pb-2 text-white">
+                            <div class="text-xs opacity-80">Prendre un rendez-vous</div>
+                            <div class="font-medium">Studio Salon</div>
+                        </div>
+                        <div class="p-4 space-y-4 flex-1 bg-gray-50">
+                            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Choisir un service</div>
+                            <!-- Mock Service item -->
+                            <div class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center">
+                                <div>
+                                    <div class="text-sm font-medium text-slate-900">Coupe Premium</div>
+                                    <div class="text-xs text-slate-500">45 min</div>
+                                </div>
+                                <div class="w-5 h-5 rounded-full border border-teal-500 bg-teal-50 flex items-center justify-center">
+                                    <div class="w-2 h-2 bg-teal-500 rounded-full"></div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-3 rounded-xl border border-gray-100 shadow-sm flex justify-between items-center opacity-60">
+                                <div>
+                                    <div class="text-sm font-medium text-slate-900">Taille de barbe</div>
+                                    <div class="text-xs text-slate-500">20 min</div>
+                                </div>
+                                <div class="w-5 h-5 rounded-full border border-gray-300"></div>
+                            </div>
+                            <div class="text-[11px] text-slate-500 bg-white border border-gray-100 rounded-lg px-3 py-2">
+                                Mar 16 avr • Barber Samir • Agence centre-ville
+                            </div>
+                            
+                            <div class="text-xs font-semibold text-slate-500 uppercase tracking-wider pt-2">Choisir l'horaire</div>
+                            <div class="grid grid-cols-2 gap-2">
+                                <div class="bg-teal-600 text-white py-2 rounded-lg text-center text-sm font-medium">10:00 AM</div>
+                                <div class="bg-white border border-gray-200 py-2 rounded-lg text-center text-sm font-medium text-slate-600">11:00 AM</div>
+                                <div class="bg-gray-100 border border-gray-200 py-2 rounded-lg text-center text-sm font-medium text-slate-400 line-through">12:30 PM</div>
+                                <div class="bg-white border border-gray-200 py-2 rounded-lg text-center text-sm font-medium text-slate-600">02:00 PM</div>
+                            </div>
+                        </div>
+                        <div class="px-4 pt-2 pb-8 bg-white border-t border-gray-100">
+                            <div class="flex justify-between items-center text-[11px] text-slate-500 mb-2">
+                                <span>Coupe Premium • 45 min</span>
+                                <span class="font-medium text-slate-700">1800 DA</span>
+                            </div>
+                            <div class="w-full bg-slate-900 text-white text-center py-3 rounded-xl text-sm font-medium">Confirmer le rendez-vous</div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar App Mockup (Background) -->
+                    <div class="absolute z-10 w-[260px] h-[320px] md:w-[300px] md:h-[350px] bg-white rounded-xl border border-gray-200 shadow-xl overflow-hidden right-2 md:right-4 top-14 md:top-16 transform sm:translate-x-6 md:translate-x-12 opacity-90 hidden sm:flex flex-col">
+                        <div class="h-12 border-b border-gray-100 flex items-center justify-between px-4 bg-gray-50">
+                            <div class="text-sm font-medium text-slate-700">Jeu. 16 avr</div>
+                            <div class="text-[10px] px-2 py-1 rounded-full bg-emerald-50 text-emerald-700 font-medium">Amina</div>
+                        </div>
+                        <div class="flex-1 p-3 grid grid-cols-3 gap-2 relative">
+                            <!-- Time column -->
+                            <div class="col-span-1 space-y-4 text-xs text-slate-400 text-right pr-2 pt-2 border-r border-gray-100">
+                                <div>09:00</div>
+                                <div>10:00</div>
+                                <div>11:00</div>
+                                <div>12:00</div>
+                                <div>13:00</div>
+                            </div>
+                            <!-- Events -->
+                            <div class="col-span-2 relative pt-2">
+                                <div class="absolute top-2 left-0 right-0 h-12 bg-blue-100 rounded border border-blue-200 px-2 py-1">
+                                    <div class="text-[10px] font-semibold text-blue-900 leading-none">09:30 Coupe</div>
+                                    <div class="text-[9px] text-blue-700 mt-1">Yacine B. • 30 min</div>
+                                </div>
+                                <div class="absolute top-20 left-0 right-0 h-16 bg-emerald-100 rounded border border-emerald-200 px-2 py-1">
+                                    <div class="text-[10px] font-semibold text-emerald-900 leading-none">10:45 Coloration + Brushing</div>
+                                    <div class="text-[9px] text-emerald-700 mt-1">Nadia M. • Acompte recu</div>
+                                    <div class="text-[9px] text-emerald-600 mt-1">Equipe : Lina</div>
+                                </div>
+                                <div class="absolute top-40 left-0 w-3/4 h-10 bg-amber-100 rounded border border-amber-200 px-2 py-1">
+                                    <div class="text-[9px] font-semibold text-amber-900 leading-none">12:30 Taille de barbe</div>
+                                    <div class="text-[9px] text-amber-700 mt-1">Creneau libre</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Dashboard Features Section -->
+    <section id="features" class="py-24 bg-gradient-to-br from-blue-100 via-teal-50 to-emerald-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-20">
+                <h2 data-i18n="features.title" class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+                    Tout ce dont vous avez besoin au meme endroit
+                </h2>
+                <p data-i18n="features.subtitle" class="text-lg text-slate-600">
+                    Remplacez plusieurs outils par une solution simple, faite pour les activites de services.
+                </p>
+            </div>
+
+            <div class="space-y-24">
+                <!-- Feature 1: Planning -->
+                <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
+                    <div class="w-full md:w-1/2">
+                        <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center mb-6">
+                            <i data-lucide="calendar-days" class="text-2xl"></i>
+                        </div>
+                        <h3 data-i18n="features.planning.title" class="text-2xl font-semibold tracking-tight text-slate-900 mb-4">Gestion du planning</h3>
+                        <p data-i18n="features.planning.text" class="text-slate-600 leading-relaxed text-base">
+                            Visualisez clairement votre journee, semaine ou mois. Organisez les rendez-vous, gerer les disponibilites de l'equipe et suivez l'activite en quelques clics.
+                        </p>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <!-- Abstract Calendar Placeholder -->
+                        <div class="bg-gray-50 rounded-2xl border border-gray-200 p-4 aspect-[4/3] shadow-inner relative overflow-hidden flex flex-col">
+                            <div class="flex justify-between items-center mb-4">
+                                <div>
+                                    <div class="text-sm font-semibold text-slate-800">Avril 2026</div>
+                                    <div class="text-xs text-slate-500">2 membres de l'equipe en ligne • 47 rendez-vous</div>
+                                </div>
+                                <div class="flex gap-1 text-[10px] font-medium">
+                                    <div class="px-2 py-1 bg-white border border-gray-200 rounded text-slate-500">Semaine</div>
+                                    <div class="px-2 py-1 bg-teal-50 border border-teal-200 rounded text-teal-700">Mois</div>
+                                </div>
+                            </div>
+                            <div class="grid grid-cols-7 gap-2 flex-1">
+                                <div class="col-span-7 grid grid-cols-7 gap-2 mb-2 text-[10px] font-semibold uppercase tracking-wide text-slate-400">
+                                    <div class="text-center">Lun</div><div class="text-center">Mar</div><div class="text-center">Mer</div><div class="text-center">Jeu</div><div class="text-center">Ven</div><div class="text-center">Sam</div><div class="text-center">Dim</div>
+                                </div>
+                                <div class="bg-white rounded border border-gray-100 p-1 h-12 text-[10px]"><div class="text-slate-400">07</div></div>
+                                <div class="bg-white rounded border border-gray-100 p-1 h-12 text-[10px]">
+                                    <div class="text-slate-500">08</div>
+                                    <div class="mt-1 px-1 py-0.5 rounded bg-teal-100 text-teal-700 truncate">Coupe x3</div>
+                                </div>
+                                <div class="bg-white rounded border border-gray-100 p-1 h-12 text-[10px]"><div class="text-slate-500">09</div></div>
+                                <div class="bg-teal-50 rounded border border-teal-200 p-1 h-12 relative ring-1 ring-teal-500 text-[10px]">
+                                    <div class="text-teal-700 font-semibold">10</div>
+                                    <div class="mt-1 px-1 py-0.5 rounded bg-teal-500 text-white truncate">Lina 10:00</div>
+                                    <div class="mt-1 px-1 py-0.5 rounded bg-emerald-400 text-white truncate">Rayan 14:00</div>
+                                </div>
+                                <div class="bg-white rounded border border-gray-100 p-1 h-12 text-[10px]">
+                                    <div class="text-slate-500">11</div>
+                                    <div class="mt-1 px-1 py-0.5 rounded bg-amber-100 text-amber-700 truncate">Acompte du</div>
+                                </div>
+                                <div class="bg-gray-100 rounded border border-gray-200 p-1 h-12 opacity-60 text-[10px]"><div class="text-slate-400">12</div></div>
+                                <div class="bg-gray-100 rounded border border-gray-200 p-1 h-12 opacity-60 text-[10px]"><div class="text-slate-400">13</div></div>
+                                <div class="bg-white rounded border border-gray-100 p-1 h-12 text-[10px]">
+                                    <div class="text-slate-500">14</div>
+                                    <div class="mt-4 px-1 py-0.5 rounded bg-blue-100 text-blue-700 truncate">Clinique ap.-midi</div>
+                                </div>
+                                <div class="bg-white rounded border border-gray-100 p-1 h-12 text-[10px]"><div class="text-slate-500">15</div></div>
+                                <div class="bg-white rounded border border-gray-100 p-1 h-12 text-[10px]">
+                                    <div class="text-slate-500">16</div>
+                                    <div class="mt-4 px-1 py-0.5 rounded bg-purple-100 text-purple-700 truncate">Creneaux coach</div>
+                                </div>
+                                <div class="bg-white rounded border border-gray-100 p-1 h-12 text-[10px]"><div class="text-slate-500">17</div></div>
+                                <div class="bg-white rounded border border-gray-100 p-1 h-12 text-[10px]">
+                                    <div class="text-slate-500">18</div>
+                                    <div class="mt-4 px-1 py-0.5 rounded bg-emerald-100 text-emerald-700 truncate">8 rendez-vous</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 2: Clients -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12 lg:gap-20">
+                    <div class="w-full md:w-1/2">
+                        <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center mb-6">
+                            <i data-lucide="users" class="text-2xl"></i>
+                        </div>
+                        <h3 data-i18n="features.clients.title" class="text-2xl font-semibold tracking-tight text-slate-900 mb-4">Gestion des clients</h3>
+                        <p data-i18n="features.clients.text" class="text-slate-600 leading-relaxed text-base">
+                            Conservez l'historique de chaque client : coordonnees, rendez-vous passes, services preferes et notes. Ideal pour fideliser et mieux organiser votre suivi.
+                        </p>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <!-- Abstract Clients List Placeholder -->
+                        <div class="bg-white rounded-2xl border border-gray-200 p-1 aspect-[4/3] shadow-md flex flex-col overflow-hidden">
+                            <div class="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50/50">
+                                <div>
+                                    <div class="text-sm font-semibold text-slate-800">Clients</div>
+                                    <div class="text-xs text-slate-500">248 au total • 12 aujourd'hui</div>
+                                </div>
+                                <div class="px-3 py-1 text-xs font-medium text-teal-700 bg-teal-100 rounded-full">Actif</div>
+                            </div>
+                            <div class="flex-1 overflow-hidden p-2 space-y-2">
+                                <!-- Row 1 -->
+                                <div class="p-3 bg-white border border-gray-100 rounded-xl flex items-center gap-4 hover:bg-gray-50 transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-slate-200 flex items-center justify-center text-slate-500 font-medium text-sm">JD</div>
+                                    <div class="flex-1">
+                                        <div class="text-xs font-semibold text-slate-800">John Dahan</div>
+                                        <div class="text-[10px] text-slate-500">Coupe • Derniere visite il y a 3 jours</div>
+                                    </div>
+                                    <div class="px-2 py-1 text-[10px] font-medium text-emerald-700 bg-emerald-100 rounded-full">VIP</div>
+                                </div>
+                                <!-- Row 2 -->
+                                <div class="p-3 bg-white border border-gray-100 rounded-xl flex items-center gap-4 hover:bg-gray-50 transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-teal-100 flex items-center justify-center text-teal-600 font-medium text-sm">AM</div>
+                                    <div class="flex-1">
+                                        <div class="text-xs font-semibold text-slate-800">Amina M.</div>
+                                        <div class="text-[10px] text-slate-500">Coloration + Lavage • 4 rendez-vous ce mois</div>
+                                    </div>
+                                    <div class="px-2 py-1 text-[10px] font-medium text-emerald-700 bg-emerald-100 rounded-full">Fidele</div>
+                                </div>
+                                <!-- Row 3 -->
+                                <div class="p-3 bg-white border border-gray-100 rounded-xl flex items-center gap-4 hover:bg-gray-50 transition-colors">
+                                    <div class="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center text-amber-600 font-medium text-sm">RK</div>
+                                    <div class="flex-1">
+                                        <div class="text-xs font-semibold text-slate-800">Rayan K.</div>
+                                        <div class="text-[10px] text-slate-500">Dernier rendez-vous manque • A relancer</div>
+                                    </div>
+                                    <div class="px-2 py-1 text-[10px] font-medium text-slate-500 bg-gray-100 rounded-full">Appel requis</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 3: Services -->
+                <div class="flex flex-col md:flex-row items-center gap-12 lg:gap-20">
+                    <div class="w-full md:w-1/2">
+                        <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center mb-6">
+                            <i data-lucide="package-2" class="text-2xl"></i>
+                        </div>
+                        <h3 data-i18n="features.services.title" class="text-2xl font-semibold tracking-tight text-slate-900 mb-4">Gestion des services</h3>
+                        <p data-i18n="features.services.text" class="text-slate-600 leading-relaxed text-base">
+                            Organisez vos prestations par categorie, duree et tarif. Assignez les services a votre equipe et ajoutez des options pour augmenter votre panier moyen.
+                        </p>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <!-- Abstract Services Grid Placeholder -->
+                        <div class="bg-gray-50 rounded-2xl border border-gray-200 p-6 aspect-[4/3] shadow-inner grid grid-cols-2 gap-4">
+                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                                <div class="w-full h-20 bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
+                                    <i data-lucide="scissors" class="text-gray-300 text-2xl"></i>
+                                </div>
+                                <div class="text-xs font-semibold text-slate-800 mb-1">Coupe Premium</div>
+                                <div class="text-[10px] text-slate-500 mb-2">Barbier • 2 membres de l'equipe</div>
+                                <div class="flex justify-between items-center">
+                                    <div class="text-[10px] text-slate-500">45 min</div>
+                                    <div class="px-2 py-1 text-[10px] font-medium text-teal-700 bg-teal-100 rounded">1800 DA</div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                                <div class="w-full h-20 bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
+                                    <i data-lucide="sparkles" class="text-gray-300 text-2xl"></i>
+                                </div>
+                                <div class="text-xs font-semibold text-slate-800 mb-1">Nettoyage visage</div>
+                                <div class="text-[10px] text-slate-500 mb-2">Soin • Option disponible</div>
+                                <div class="flex justify-between items-center">
+                                    <div class="text-[10px] text-slate-500">60 min</div>
+                                    <div class="px-2 py-1 text-[10px] font-medium text-teal-700 bg-teal-100 rounded">3000 DA</div>
+                                </div>
+                            </div>
+                            <div class="bg-white p-4 rounded-xl border border-gray-100 shadow-sm flex flex-col justify-between">
+                                <div class="w-full h-20 bg-gray-100 rounded-lg mb-3 flex items-center justify-center">
+                                    <i data-lucide="wand-sparkles" class="text-gray-300 text-2xl"></i>
+                                </div>
+                                <div class="text-xs font-semibold text-slate-800 mb-1">Soin keratine</div>
+                                <div class="text-[10px] text-slate-500 mb-2">Salon • Acompte requis</div>
+                                <div class="flex justify-between items-center">
+                                    <div class="text-[10px] text-slate-500">90 min</div>
+                                    <div class="px-2 py-1 text-[10px] font-medium text-teal-700 bg-teal-100 rounded">7500 DA</div>
+                                </div>
+                            </div>
+                            <div class="bg-transparent border-2 border-dashed border-gray-300 rounded-xl flex flex-col items-center justify-center text-gray-400 gap-2 cursor-pointer hover:bg-gray-100 transition-colors">
+                                <i data-lucide="plus-circle" class="text-2xl"></i>
+                                <span class="text-xs font-medium">Ajouter un service</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Feature 4: Stats -->
+                <div class="flex flex-col md:flex-row-reverse items-center gap-12 lg:gap-20">
+                    <div class="w-full md:w-1/2">
+                        <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center mb-6">
+                            <i data-lucide="trending-up" class="text-2xl"></i>
+                        </div>
+                        <h3 data-i18n="features.analytics.title" class="text-2xl font-semibold tracking-tight text-slate-900 mb-4">Statistiques &amp; analyse</h3>
+                        <p data-i18n="features.analytics.text" class="text-slate-600 leading-relaxed text-base">
+                            Suivez vos revenus et vos rendez-vous par jour, semaine ou mois. Identifiez les services les plus demandes et les heures de pointe pour mieux organiser l'equipe.
+                        </p>
+                    </div>
+                    <div class="w-full md:w-1/2">
+                        <!-- Abstract Dashboard Stats Placeholder -->
+                        <div class="bg-white rounded-2xl border border-gray-200 p-6 aspect-[4/3] shadow-lg flex flex-col gap-4">
+                            <div class="flex items-start justify-between mb-1">
+                                <div>
+                                    <div class="text-sm font-semibold text-slate-800">Cette semaine</div>
+                                    <div class="text-xs text-slate-500">Studio Salon • 14-20 avr</div>
+                                </div>
+                                <div class="text-[10px] px-2 py-1 rounded-full bg-slate-100 text-slate-600 font-medium">Mis a jour</div>
+                            </div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="bg-teal-50 p-4 rounded-xl">
+                                    <div class="text-xs text-teal-700 font-medium mb-1">Chiffre d'affaires</div>
+                                    <div class="text-xl font-semibold text-teal-800"><span class="bidi-ltr">324 000 DA</span></div>
+                                    <div class="text-[10px] text-teal-700 mt-1"><span class="bidi-ltr">+18% vs semaine precedente</span></div>
+                                </div>
+                                <div class="bg-emerald-50 p-4 rounded-xl">
+                                    <div class="text-xs text-emerald-700 font-medium mb-1">Rendez-vous</div>
+                                    <div class="text-xl font-semibold text-emerald-800">86</div>
+                                    <div class="text-[10px] text-emerald-700 mt-1">Panier moyen : <span class="bidi-ltr">3 770 DA</span></div>
+                                </div>
+                            </div>
+                            <div class="flex-1 border border-gray-100 rounded-xl p-4 flex flex-col relative mt-2">
+                                <div class="flex items-center justify-between text-[10px] text-slate-500 mb-2">
+                                    <span>Heures de pointe</span>
+                                    <span class="bidi-ltr">Ven 17:00-19:00</span>
+                                </div>
+                                <div class="flex-1 flex items-end gap-2 relative">
+                                <!-- Bar chart bars -->
+                                    <div class="w-full bg-gray-100 rounded-t-sm h-[30%]"></div>
+                                    <div class="w-full bg-gray-200 rounded-t-sm h-[50%]"></div>
+                                    <div class="w-full bg-teal-200 rounded-t-sm h-[40%]"></div>
+                                    <div class="w-full bg-teal-400 rounded-t-sm h-[70%]"></div>
+                                    <div class="w-full bg-emerald-500 rounded-t-sm h-[90%] relative">
+                                        <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-slate-800 text-white text-[10px] px-2 py-1 rounded">Pic</div>
+                                    </div>
+                                    <div class="w-full bg-gray-200 rounded-t-sm h-[60%]"></div>
+                                </div>
+                                <div class="grid grid-cols-6 gap-2 text-[10px] text-slate-400 mt-2">
+                                    <div class="text-center">Lun</div>
+                                    <div class="text-center">Mar</div>
+                                    <div class="text-center">Mer</div>
+                                    <div class="text-center">Jeu</div>
+                                    <div class="text-center">Ven</div>
+                                    <div class="text-center">Sam</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Made for Every Business -->
+    <section id="industries" class="py-24 bg-gradient-to-br from-blue-50/50 via-teal-50/40 to-emerald-50/50 border-y border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-12">
+                <h2 data-i18n="industries.title" class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-4">
+                    Adapte a votre secteur
+                </h2>
+                <p data-i18n="industries.subtitle" class="text-lg text-slate-600">
+                    Booki peut etre personnalise selon les besoins de votre activite.
+                </p>
+            </div>
+
+            <!-- Industries Pills -->
+            <div class="flex flex-wrap justify-center gap-3 md:gap-4 mb-16 max-w-4xl mx-auto">
+                <div class="px-6 py-3 rounded-full border border-gray-200 bg-white text-slate-700 font-medium shadow-sm flex items-center gap-2 cursor-pointer hover:border-teal-500 hover:text-teal-600 transition-all">
+                    <i data-lucide="scissors" class="text-lg"></i> <span data-i18n="industries.pill1">Barbiers &amp; Salons</span>
+                </div>
+                <div class="px-6 py-3 rounded-full border border-gray-200 bg-white text-slate-700 font-medium shadow-sm flex items-center gap-2 cursor-pointer hover:border-teal-500 hover:text-teal-600 transition-all">
+                    <i data-lucide="heart-pulse" class="text-lg"></i> <span data-i18n="industries.pill2">Cliniques &amp; Spa</span>
+                </div>
+                <div class="px-6 py-3 rounded-full border border-gray-200 bg-white text-slate-700 font-medium shadow-sm flex items-center gap-2 cursor-pointer hover:border-teal-500 hover:text-teal-600 transition-all">
+                    <i data-lucide="dumbbell" class="text-lg"></i> <span data-i18n="industries.pill3">Salles de sport</span>
+                </div>
+                <div class="px-6 py-3 rounded-full border border-gray-200 bg-white text-slate-700 font-medium shadow-sm flex items-center gap-2 cursor-pointer hover:border-teal-500 hover:text-teal-600 transition-all">
+                    <i data-lucide="graduation-cap" class="text-lg"></i> <span data-i18n="industries.pill4">Formateurs &amp; Coachs</span>
+                </div>
+                <div class="px-6 py-3 rounded-full border border-gray-200 bg-white text-slate-700 font-medium shadow-sm flex items-center gap-2 cursor-pointer hover:border-teal-500 hover:text-teal-600 transition-all">
+                    <i data-lucide="car" class="text-lg"></i> <span data-i18n="industries.pill5">Services auto</span>
+                </div>
+            </div>
+
+            <!-- Theme Previews Placeholder Grid -->
+            <div dir="ltr" class="no-scrollbar flex md:grid md:grid-cols-3 gap-4 md:gap-8 max-w-5xl mx-auto overflow-x-auto md:overflow-visible snap-x snap-mandatory md:snap-none px-1 pb-2">
+                <!-- Theme 1: Dark/Barber -->
+                <div class="snap-center shrink-0 w-[84vw] max-w-[22rem] md:w-full md:max-w-none bg-slate-900 rounded-2xl p-5 sm:p-6 aspect-[9/16] shadow-xl border border-slate-800 flex flex-col items-center justify-start transform transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 rounded-full bg-slate-800 border border-slate-700 mt-4 mb-4 flex items-center justify-center">
+                        <i data-lucide="scissors" class="text-2xl text-white"></i>
+                    </div>
+                    <div class="text-sm font-semibold text-white mb-2">Fade Masters</div>
+                    <div class="text-[10px] text-slate-400 mb-6">Page de reservation salon</div>
+                    <div class="w-full space-y-3">
+                        <div class="h-12 w-full bg-white/10 rounded-xl border border-white/5 px-4 flex items-center justify-between text-xs text-white">
+                            <span>Degrade</span><span class="text-slate-300">25 min</span>
+                        </div>
+                        <div class="h-12 w-full bg-white/10 rounded-xl border border-white/5 px-4 flex items-center justify-between text-xs text-white">
+                            <span>Taille barbe</span><span class="text-slate-300">15 min</span>
+                        </div>
+                        <div class="h-12 w-full bg-white/10 rounded-xl border border-white/5 px-4 flex items-center justify-between text-xs text-white">
+                            <span>Degrade + Barbe</span><span class="text-emerald-300">2200 DA</span>
+                        </div>
+                    </div>
+                    <div class="mt-auto w-full h-11 rounded-xl bg-white text-slate-900 text-sm font-medium flex items-center justify-center">Reserver un rendez-vous</div>
+                </div>
+                <!-- Theme 2: Clean/Clinic (Active) -->
+                <div class="snap-center shrink-0 w-[84vw] max-w-[22rem] md:w-full md:max-w-none bg-white rounded-2xl p-5 sm:p-6 aspect-[9/16] shadow-xl border border-gray-200 flex flex-col items-center justify-start transform md:scale-105 z-10 relative">
+                    <div class="absolute top-4 right-4 bg-teal-100 text-teal-700 text-[10px] px-2 py-1 rounded font-semibold uppercase tracking-wider">Apercu</div>
+                    <div class="w-16 h-16 rounded-full bg-teal-50 border border-teal-100 mt-4 mb-4 flex items-center justify-center">
+                        <i data-lucide="heart-pulse" class="text-2xl text-teal-600"></i>
+                    </div>
+                    <div class="text-sm font-semibold text-slate-800 mb-2">CityCare Clinic</div>
+                    <div class="text-[10px] text-slate-500 mb-6">Choisissez le type de consultation</div>
+                    <div class="w-full space-y-3">
+                        <div class="h-12 w-full bg-white rounded-xl border border-gray-200 shadow-sm flex items-center px-4">
+                            <div class="w-4 h-4 rounded-full border border-gray-300"></div>
+                            <div class="ml-3 flex-1 flex items-center justify-between text-xs text-slate-600">
+                                <span>Consultation generale</span>
+                                <span>30 min</span>
+                            </div>
+                        </div>
+                        <div class="h-12 w-full bg-teal-50 rounded-xl border border-teal-200 shadow-sm flex items-center px-4">
+                            <div class="w-4 h-4 rounded-full bg-teal-600 flex items-center justify-center"><div class="w-1.5 h-1.5 bg-white rounded-full"></div></div>
+                            <div class="ml-3 flex-1 flex items-center justify-between text-xs text-teal-700 font-medium">
+                                <span>Visite de suivi</span>
+                                <span>20 min</span>
+                            </div>
+                        </div>
+                        <div class="h-12 w-full bg-white rounded-xl border border-gray-200 shadow-sm flex items-center px-4">
+                            <div class="w-4 h-4 rounded-full border border-gray-300"></div>
+                            <div class="ml-3 flex-1 flex items-center justify-between text-xs text-slate-600">
+                                <span>Resultats d'analyses</span>
+                                <span>15 min</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-auto w-full h-12 bg-gradient-to-r from-blue-600 to-teal-500 rounded-xl flex items-center justify-center text-white text-sm font-medium">Reserver</div>
+                </div>
+                <!-- Theme 3: Vibrant/Gym -->
+                <div class="snap-center shrink-0 w-[84vw] max-w-[22rem] md:w-full md:max-w-none bg-amber-50 rounded-2xl p-5 sm:p-6 aspect-[9/16] shadow-xl border border-amber-100 flex flex-col items-center justify-start transform transition-transform hover:-translate-y-2">
+                    <div class="w-16 h-16 rounded-full bg-amber-500 mt-4 mb-4 flex items-center justify-center shadow-lg shadow-amber-500/30">
+                        <i data-lucide="dumbbell" class="text-2xl text-white"></i>
+                    </div>
+                    <div class="text-sm font-semibold text-amber-900 mb-2">FuelFit Studio</div>
+                    <div class="text-[10px] text-amber-800/70 mb-6">Reservez des cours et coachs</div>
+                    <div class="w-full space-y-3">
+                        <div class="h-16 w-full bg-white rounded-xl border border-amber-200 shadow-sm flex flex-col justify-center px-4">
+                            <div class="text-xs font-semibold text-amber-900 mb-1">Cours HIIT groupe</div>
+                            <div class="text-[10px] text-amber-700">19:00 • 12 places restantes</div>
+                        </div>
+                        <div class="h-16 w-full bg-white rounded-xl border border-amber-200 shadow-sm flex flex-col justify-center px-4">
+                            <div class="text-xs font-semibold text-amber-900 mb-1">Coach Sara (1:1)</div>
+                            <div class="text-[10px] text-amber-700">3500 DA • 45 min</div>
+                        </div>
+                    </div>
+                    <div class="mt-auto w-full h-11 rounded-xl bg-amber-500 text-white text-sm font-medium flex items-center justify-center">Reserver un creneau</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. Contact Section -->
+    <section id="contact" class="py-24 bg-gradient-to-br from-blue-100 via-teal-50 to-emerald-100 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col lg:flex-row gap-12 lg:gap-24">
+                
+                <!-- Left side: Copy -->
+                <div class="w-full lg:w-5/12 flex flex-col justify-center">
+                    <h2 data-i18n="contact.title" class="text-3xl md:text-4xl font-semibold tracking-tight text-slate-900 mb-6">
+                        Pret a digitaliser votre activite ?
+                    </h2>
+                    <p data-i18n="contact.subtitle" class="text-lg text-slate-600 mb-8">
+                        Demandez une demo. Nous vous montrons comment Booki peut s'adapter a votre activite et simplifier vos rendez-vous.
+                    </p>
+                    
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-teal-50 text-teal-600 flex items-center justify-center">
+                                <i data-lucide="timer" class="text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 data-i18n="contact.trust1.title" class="text-base font-medium text-slate-900">Configuration en 24h</h4>
+                                <p data-i18n="contact.trust1.text" class="text-sm text-slate-500">Mise en place rapide pour votre activite.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-emerald-50 text-emerald-600 flex items-center justify-center">
+                                <i data-lucide="shield-check" class="text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 data-i18n="contact.trust2.title" class="text-base font-medium text-slate-900">Essai gratuit 14 jours</h4>
+                                <p data-i18n="contact.trust2.text" class="text-sm text-slate-500">Aucune carte bancaire requise.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 rounded-full bg-blue-50 text-blue-600 flex items-center justify-center">
+                                <i data-lucide="message-circle" class="text-xl"></i>
+                            </div>
+                            <div>
+                                <h4 data-i18n="contact.trust3.title" class="text-base font-medium text-slate-900">Support WhatsApp disponible</h4>
+                                <p data-i18n="contact.trust3.text" class="text-sm text-slate-500">Reponse rapide pour vos questions et votre configuration.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right side: Form -->
+                <div class="w-full lg:w-7/12">
+                    <div class="bg-white rounded-2xl border border-gray-200 shadow-xl p-6 sm:p-10">
+                        <form class="space-y-5">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label data-i18n="form.fullName.label" class="block text-sm font-medium text-slate-700 mb-1.5">Nom complet *</label>
+                                    <input type="text" placeholder="Ahmed Benali" data-i18n-placeholder="form.fullName.placeholder" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all bg-gray-50 hover:bg-white" required="">
+                                </div>
+                                <div>
+                                    <label data-i18n="form.email.label" class="block text-sm font-medium text-slate-700 mb-1.5">Adresse email *</label>
+                                    <input type="email" placeholder="john@example.com" data-i18n-placeholder="form.email.placeholder" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all bg-gray-50 hover:bg-white" required="">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div>
+                                    <label data-i18n="form.phone.label" class="block text-sm font-medium text-slate-700 mb-1.5">Numero de telephone</label>
+                                    <input type="tel" placeholder="+213 5 55 00 00 00" data-i18n-placeholder="form.phone.placeholder" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all bg-gray-50 hover:bg-white">
+                                </div>
+                                <div>
+                                    <label data-i18n="form.wilaya.label" class="block text-sm font-medium text-slate-700 mb-1.5">Wilaya *</label>
+                                    <input type="text" placeholder="Alger" data-i18n-placeholder="form.wilaya.placeholder" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all bg-gray-50 hover:bg-white" required="">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label data-i18n="form.businessType.label" class="block text-sm font-medium text-slate-700 mb-1.5">Type d'activite *</label>
+                                <div class="relative">
+                                    <select class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all bg-gray-50 hover:bg-white appearance-none text-slate-700" required="">
+                                        <option value="" disabled="" selected="" data-i18n="form.businessType.placeholder">Choisissez votre secteur</option>
+                                        <option value="barber" data-i18n="form.businessType.options.barber">Barbier / Salon</option>
+                                        <option value="clinic" data-i18n="form.businessType.options.clinic">Clinique / Medical</option>
+                                        <option value="gym" data-i18n="form.businessType.options.gym">Salle de sport / Fitness</option>
+                                        <option value="training" data-i18n="form.businessType.options.training">Formation / Coaching</option>
+                                        <option value="auto" data-i18n="form.businessType.options.auto">Lavage auto / Service auto</option>
+                                        <option value="other" data-i18n="form.businessType.options.other">Autre</option>
+                                    </select>
+                                    <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                                        <i data-lucide="chevron-down"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label data-i18n="form.message.label" class="block text-sm font-medium text-slate-700 mb-1.5">Message (optionnel)</label>
+                                <textarea rows="3" placeholder="Expliquez rapidement vos besoins ou vos difficultees actuelles..." data-i18n-placeholder="form.message.placeholder" class="w-full rounded-xl border border-gray-300 px-4 py-3 text-sm focus:border-teal-500 focus:ring-1 focus:ring-teal-500 outline-none transition-all bg-gray-50 hover:bg-white resize-none"></textarea>
+                            </div>
+
+                            <button type="submit" data-i18n="form.submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white py-3.5 rounded-xl text-base font-medium shadow-sm transition-all duration-300 mt-2">
+                                Demander une demo
+                            </button>
+                            <p data-i18n="form.legal" class="text-xs text-center text-slate-500 mt-4">En envoyant ce formulaire, vous acceptez nos conditions d'utilisation et notre politique de confidentialite.</p>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 8. Footer -->
+    <footer class="bg-gray-50 py-12 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="flex items-center gap-2">
+                <img src="assets/logo/logo.png" alt="Booki logo" data-i18n-alt="brand.logoAlt" class="h-10 w-auto">
+            </div>
+            
+            <div class="flex flex-wrap justify-center items-center gap-6 text-sm font-medium text-slate-600">
+                <a href="mailto:booki@gmail.com" class="hover:text-teal-600 transition-colors flex items-center gap-2">
+                    <i data-lucide="mail" class="text-lg"></i>
+                    booki@gmail.com
+                </a>
+                <a href="#" class="hover:text-emerald-600 transition-colors flex items-center gap-2">
+                    <i data-lucide="message-circle" class="text-lg"></i>
+                    <span data-i18n="footer.whatsapp">Support WhatsApp</span>
+                </a>
+            </div>
+            
+            <div data-i18n="footer.rights" class="text-sm text-slate-400">
+                © 2026 Booki Inc. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.575.0/dist/umd/lucide.min.js"></script>
+    <script>
+        const I18N = {
+            fr: {
+                meta: { htmlLang: "fr", dir: "ltr" },
+                brand: { logoAlt: "Logo Booki" },
+                nav: {
+                    homeAria: "Accueil Booki",
+                    howItWorks: "Comment ca marche",
+                    features: "Fonctionnalites",
+                    industries: "Secteurs",
+                    cta: "Demander une demo",
+                    langFr: "FR",
+                    langEn: "EN",
+                    langAr: "العربية",
+                    menuLabel: "Langue",
+                    mobileMenuTitle: "Menu",
+                    openMenuAria: "Ouvrir le menu",
+                    closeMenuAria: "Fermer le menu",
+                    activeBadge: "Actif",
+                    availableBadge: "Disponible"
+                },
+                hero: {
+                    title: "Gere votre activite. Laissez vos clients reserver en ligne.",
+                    subtitle: "Booki est une solution de reservation et de gestion pour les activites sur rendez-vous. Organisez vos rendez-vous, gagnez du temps et offrez une meilleure experience a vos clients.",
+                    ctaPrimary: "Demander une demo",
+                    ctaWhatsapp: "Parler sur WhatsApp",
+                    trustLine: "Utilise par 500+ entreprises locales",
+                    imageAlt: "Apercu du tableau de bord Booki"
+                },
+                problem: {
+                    title: "Vous gerez encore vos rendez-vous manuellement ?",
+                    subtitle: "Gerer une activite est deja difficile. Une organisation confuse des rendez-vous ne doit pas freiner votre croissance.",
+                    card1: { title: "Trop de messages WhatsApp", text: "Des echanges sans fin pour trouver un seul horaire disponible pour un client." },
+                    card2: { title: "Appels rates et erreurs", text: "Des clients perdus parce que vous n'avez pas repondu, ou des doubles reservations par erreur." },
+                    card3: { title: "Pas de calendrier clair", text: "Des carnets papier ou des tableaux confus que seule votre equipe comprend." },
+                    card4: { title: "Peu de visibilite sur le chiffre", text: "Vous estimez vos revenus au lieu de savoir ce qui marche vraiment et ce qui rapporte le plus." }
+                },
+                how: {
+                    title: "Comment Booki fonctionne",
+                    subtitle: "Une experience simple du choix du rendez-vous jusqu'au suivi de l'activite.",
+                    step1: {
+                        title: "Le client choisit le service et l'horaire",
+                        text: "Partagez votre lien Booki sur WhatsApp, Instagram ou votre site. Le client voit vos disponibilites et reserve en quelques clics."
+                    },
+                    step2: {
+                        title: "Le rendez-vous est confirme automatiquement",
+                        text: "Le creneau se bloque dans votre calendrier et vous pouvez envoyer des rappels automatiques pour reduire les absences."
+                    },
+                    step3: {
+                        title: "Gerez tout depuis le tableau de bord",
+                        text: "Consultez votre planning, vos clients, vos services et votre activite depuis un seul outil simple."
+                    }
+                },
+                features: {
+                    title: "Tout ce dont vous avez besoin au meme endroit",
+                    subtitle: "Remplacez plusieurs outils par une solution simple, faite pour les activites de services.",
+                    planning: {
+                        title: "Gestion du planning",
+                        text: "Visualisez clairement votre journee, semaine ou mois. Organisez les rendez-vous, gerer les disponibilites de l'equipe et suivez l'activite en quelques clics."
+                    },
+                    clients: {
+                        title: "Gestion des clients",
+                        text: "Conservez l'historique de chaque client : coordonnees, rendez-vous passes, services preferes et notes. Ideal pour fideliser et mieux organiser votre suivi."
+                    },
+                    services: {
+                        title: "Gestion des services",
+                        text: "Organisez vos prestations par categorie, duree et tarif. Assignez les services a votre equipe et ajoutez des options pour augmenter votre panier moyen."
+                    },
+                    analytics: {
+                        title: "Statistiques & analyse",
+                        text: "Suivez vos revenus et vos rendez-vous par jour, semaine ou mois. Identifiez les services les plus demandes et les heures de pointe pour mieux organiser l'equipe."
+                    }
+                },
+                industries: {
+                    title: "Adapte a votre secteur",
+                    subtitle: "Booki peut etre personnalise selon les besoins de votre activite.",
+                    pill1: "Barbiers & Salons",
+                    pill2: "Cliniques & Spa",
+                    pill3: "Salles de sport",
+                    pill4: "Formateurs & Coachs",
+                    pill5: "Services auto"
+                },
+                contact: {
+                    title: "Pret a digitaliser votre activite ?",
+                    subtitle: "Demandez une demo. Nous vous montrons comment Booki peut s'adapter a votre activite et simplifier vos rendez-vous.",
+                    trust1: { title: "Configuration en 24h", text: "Mise en place rapide pour votre activite." },
+                    trust2: { title: "Essai gratuit 14 jours", text: "Aucune carte bancaire requise." },
+                    trust3: { title: "Support WhatsApp disponible", text: "Reponse rapide pour vos questions et votre configuration." }
+                },
+                form: {
+                    fullName: { label: "Nom complet *", placeholder: "Ahmed Benali" },
+                    email: { label: "Adresse email *", placeholder: "john@example.com" },
+                    phone: { label: "Numero de telephone", placeholder: "+213 5 55 00 00 00" },
+                    wilaya: { label: "Wilaya *", placeholder: "Alger" },
+                    businessType: {
+                        label: "Type d'activite *",
+                        placeholder: "Choisissez votre secteur",
+                        options: {
+                            barber: "Barbier / Salon",
+                            clinic: "Clinique / Medical",
+                            gym: "Salle de sport / Fitness",
+                            training: "Formation / Coaching",
+                            auto: "Lavage auto / Service auto",
+                            other: "Autre"
+                        }
+                    },
+                    message: { label: "Message (optionnel)", placeholder: "Expliquez rapidement vos besoins ou vos difficultees actuelles..." },
+                    submit: "Demander une demo",
+                    legal: "En envoyant ce formulaire, vous acceptez nos conditions d'utilisation et notre politique de confidentialite."
+                },
+                footer: {
+                    whatsapp: "Support WhatsApp",
+                    rights: "© 2026 Booki Inc. All rights reserved."
+                }
+            },
+            en: {
+                meta: { htmlLang: "en", dir: "ltr" },
+                brand: { logoAlt: "Booki logo" },
+                nav: {
+                    homeAria: "Booki home",
+                    howItWorks: "How it works",
+                    features: "Features",
+                    industries: "Industries",
+                    cta: "Request a demo",
+                    langFr: "FR",
+                    langEn: "EN",
+                    langAr: "العربية",
+                    menuLabel: "Language",
+                    mobileMenuTitle: "Menu",
+                    openMenuAria: "Open menu",
+                    closeMenuAria: "Close menu",
+                    activeBadge: "Active",
+                    availableBadge: "Available"
+                },
+                hero: {
+                    title: "Smart appointment management for growing businesses",
+                    subtitle: "Booki is a booking and appointment management solution for businesses that run on appointments. Organize your bookings, save time, and deliver a better experience to your clients.",
+                    ctaPrimary: "Request a demo",
+                    ctaWhatsapp: "Chat on WhatsApp",
+                    trustLine: "Used by 500+ local businesses",
+                    imageAlt: "Booki dashboard preview"
+                },
+                problem: {
+                    title: "Still managing your appointments manually?",
+                    subtitle: "Running a business is already hard enough. Scheduling chaos should not slow your growth.",
+                    card1: { title: "Too many WhatsApp messages", text: "Too much back-and-forth just to find one suitable slot for a single client." },
+                    card2: { title: "Missed calls and mistakes", text: "Lost clients because you could not answer, or double bookings created by mistake." },
+                    card3: { title: "No clear calendar", text: "Paper notebooks or confusing sheets that only your team understands." },
+                    card4: { title: "Low revenue visibility", text: "You estimate income instead of clearly seeing what works and what brings the most revenue." }
+                },
+                how: {
+                    title: "How Booki works",
+                    subtitle: "A simple flow from choosing a time slot to managing your business.",
+                    step1: {
+                        title: "The client chooses the service and time",
+                        text: "Share your Booki link on WhatsApp, Instagram, or your website. The client sees your availability and books in a few clicks."
+                    },
+                    step2: {
+                        title: "The appointment is confirmed automatically",
+                        text: "The slot is blocked in your calendar and you can send automatic reminders to reduce no-shows."
+                    },
+                    step3: {
+                        title: "Manage everything from the dashboard",
+                        text: "Track your schedule, clients, services, and activity from one simple tool."
+                    }
+                },
+                features: {
+                    title: "Everything you need in one place",
+                    subtitle: "Replace multiple tools with one simple solution built for service businesses.",
+                    planning: {
+                        title: "Planning Management",
+                        text: "View your day, week, or month clearly. Organize appointments, manage team availability, and follow activity in just a few clicks."
+                    },
+                    clients: {
+                        title: "Client Management",
+                        text: "Keep each client history: contact info, past appointments, favorite services, and notes. Ideal for retention and better follow-up."
+                    },
+                    services: {
+                        title: "Service Management",
+                        text: "Organize services by category, duration, and pricing. Assign services to your team and add options to increase average basket size."
+                    },
+                    analytics: {
+                        title: "Statistics & Analytics",
+                        text: "Track revenue and appointments by day, week, or month. Identify top services and peak hours to organize your team better."
+                    }
+                },
+                industries: {
+                    title: "Built for your industry",
+                    subtitle: "Booki can be customized to match your business needs.",
+                    pill1: "Barbers & Salons",
+                    pill2: "Clinics & Spa",
+                    pill3: "Gyms & Fitness",
+                    pill4: "Trainers & Coaches",
+                    pill5: "Car Services"
+                },
+                contact: {
+                    title: "Ready to digitize your business?",
+                    subtitle: "Request a demo. We will show you how Booki can adapt to your business and simplify appointment management.",
+                    trust1: { title: "Setup in 24h", text: "Fast setup tailored to your business." },
+                    trust2: { title: "14-day free trial", text: "No credit card required." },
+                    trust3: { title: "WhatsApp support available", text: "Fast replies for your questions and setup." }
+                },
+                form: {
+                    fullName: { label: "Full name *", placeholder: "Ahmed Benali" },
+                    email: { label: "Email address *", placeholder: "john@example.com" },
+                    phone: { label: "Phone number", placeholder: "+213 5 55 00 00 00" },
+                    wilaya: { label: "Wilaya *", placeholder: "Algiers" },
+                    businessType: {
+                        label: "Business type *",
+                        placeholder: "Choose your industry",
+                        options: {
+                            barber: "Barber / Salon",
+                            clinic: "Clinic / Medical",
+                            gym: "Gym / Fitness",
+                            training: "Training / Coaching",
+                            auto: "Car Wash / Car Service",
+                            other: "Other"
+                        }
+                    },
+                    message: { label: "Message (optional)", placeholder: "Briefly describe your needs or current challenges..." },
+                    submit: "Request a demo",
+                    legal: "By submitting this form, you agree to our Terms of Service and Privacy Policy."
+                },
+                footer: {
+                    whatsapp: "WhatsApp Support",
+                    rights: "© 2026 Booki Inc. All rights reserved."
+                }
+            },
+            ar: {
+                meta: { htmlLang: "ar", dir: "rtl" },
+                brand: { logoAlt: "شعار بوكي" },
+                nav: {
+                    homeAria: "الصفحة الرئيسية لبوكي",
+                    howItWorks: "كيف يعمل",
+                    features: "الميزات",
+                    industries: "القطاعات",
+                    cta: "اطلب عرضا تجريبيا",
+                    langFr: "FR",
+                    langEn: "EN",
+                    langAr: "العربية",
+                    menuLabel: "اللغة",
+                    mobileMenuTitle: "القائمة",
+                    openMenuAria: "فتح القائمة",
+                    closeMenuAria: "اغلاق القائمة",
+                    activeBadge: "مفعل",
+                    availableBadge: "متاح"
+                },
+                hero: {
+                    title: "منصة ذكية لتنظيم المواعيد وإدارة نشاطك بسهولة",
+                    subtitle: "بوكي هو حل لحجز وادارة المواعيد للانشطة التي تعتمد على المواعيد. نظّم حجوزاتك ووفر وقتك وقدم تجربة افضل لعملائك.",
+                    ctaPrimary: "اطلب عرضا تجريبيا",
+                    ctaWhatsapp: "تحدث عبر واتساب",
+                    trustLine: "يستخدمه اكثر من 500 نشاط محلي",
+                    imageAlt: "معاينة لوحة تحكم بوكي"
+                },
+                problem: {
+                    title: "هل ما زلت تدير مواعيدك يدويا؟",
+                    subtitle: "ادارة النشاط صعبة بما فيه الكفاية. لا يجب ان تعرقل فوضى المواعيد نموك.",
+                    card1: { title: "رسائل واتساب كثيرة", text: "محادثات طويلة فقط للعثور على موعد مناسب لعميل واحد." },
+                    card2: { title: "مكالمات فائتة واخطاء", text: "عملاء ضائعون بسبب عدم الرد او بسبب حجوزات مزدوجة بالخطأ." },
+                    card3: { title: "لا يوجد تقويم واضح", text: "دفاتر ورقية او جداول غير واضحة لا يفهمها الا فريقك." },
+                    card4: { title: "رؤية ضعيفة للايرادات", text: "تقدّر دخلك بدل ان تعرف ما الذي يعمل فعلا وما الذي يحقق افضل عائد." }
+                },
+                how: {
+                    title: "كيف يعمل بوكي",
+                    subtitle: "تجربة بسيطة من اختيار الموعد حتى متابعة نشاطك.",
+                    step1: {
+                        title: "العميل يختار الخدمة والوقت",
+                        text: "شارك رابط بوكي على واتساب او انستغرام او موقعك. يرى العميل المواعيد المتاحة ويحجز خلال ثوان."
+                    },
+                    step2: {
+                        title: "يتم تاكيد الموعد تلقائيا",
+                        text: "يتم حجز الموعد مباشرة في التقويم ويمكنك ارسال تذكيرات تلقائية لتقليل الغيابات."
+                    },
+                    step3: {
+                        title: "ادارة كل شيء من لوحة التحكم",
+                        text: "تابع التخطيط والعملاء والخدمات ونشاطك كله من مكان واحد بسيط."
+                    }
+                },
+                features: {
+                    title: "كل ما تحتاجه في مكان واحد",
+                    subtitle: "استبدل عدة ادوات بحل بسيط مخصص للانشطة الخدمية.",
+                    planning: {
+                        title: "ادارة التخطيط",
+                        text: "شاهد يومك او اسبوعك او شهرك بوضوح. نظّم المواعيد وادارة توفر الفريق وتابع النشاط في بضع نقرات."
+                    },
+                    clients: {
+                        title: "ادارة العملاء",
+                        text: "احتفظ بسجل كل عميل: البيانات، المواعيد السابقة، الخدمات المفضلة والملاحظات. هذا يساعدك على المتابعة والولاء."
+                    },
+                    services: {
+                        title: "ادارة الخدمات",
+                        text: "نظّم خدماتك حسب الفئة والمدة والسعر. اسند الخدمات للفريق واضف خيارات لرفع متوسط الطلب."
+                    },
+                    analytics: {
+                        title: "الاحصائيات والتحليل",
+                        text: "تابع الايرادات والمواعيد يوميا او اسبوعيا او شهريا. اعرف اكثر الخدمات طلبا وساعات الذروة لتنظيم الفريق بشكل افضل."
+                    }
+                },
+                industries: {
+                    title: "مناسب لقطاعك",
+                    subtitle: "يمكن تخصيص بوكي حسب احتياجات نشاطك.",
+                    pill1: "حلاقة وصالونات",
+                    pill2: "عيادات وسبا",
+                    pill3: "نواد رياضية",
+                    pill4: "مدربون ومكونون",
+                    pill5: "خدمات السيارات"
+                },
+                contact: {
+                    title: "جاهز لرقمنة نشاطك؟",
+                    subtitle: "اطلب عرضا تجريبيا. سنريك كيف يمكن لبوكي ان يتكيف مع نشاطك ويبسط ادارة المواعيد.",
+                    trust1: { title: "اعداد خلال 24 ساعة", text: "تشغيل سريع يناسب نشاطك." },
+                    trust2: { title: "تجربة مجانية 14 يوما", text: "لا حاجة لبطاقة بنكية." },
+                    trust3: { title: "دعم واتساب متوفر", text: "رد سريع على اسئلتك ومساعدتك في الاعداد." }
+                },
+                form: {
+                    fullName: { label: "الاسم الكامل *", placeholder: "أحمد بن علي" },
+                    email: { label: "البريد الالكتروني *", placeholder: "name@example.com" },
+                    phone: { label: "رقم الهاتف", placeholder: "+213 5 55 00 00 00" },
+                    wilaya: { label: "الولاية *", placeholder: "الجزائر" },
+                    businessType: {
+                        label: "نوع النشاط *",
+                        placeholder: "اختر قطاعك",
+                        options: {
+                            barber: "حلاق / صالون",
+                            clinic: "عيادة / طبي",
+                            gym: "نادي رياضي / لياقة",
+                            training: "تكوين / كوتشينغ",
+                            auto: "غسل سيارات / خدمة سيارات",
+                            other: "اخرى"
+                        }
+                    },
+                    message: { label: "رسالة (اختياري)", placeholder: "اشرح بسرعة احتياجاتك او الصعوبات الحالية..." },
+                    submit: "اطلب عرضا تجريبيا",
+                    legal: "بارسال هذا النموذج، فانك توافق على شروط الاستخدام وسياسة الخصوصية."
+                },
+                footer: {
+                    whatsapp: "دعم واتساب",
+                    rights: "© 2026 Booki Inc. جميع الحقوق محفوظة."
+                }
+            }
+        };
+
+        function getNestedValue(obj, path) {
+            return path.split(".").reduce((acc, key) => (acc && acc[key] !== undefined ? acc[key] : undefined), obj);
+        }
+
+        const pageLoader = document.getElementById("page-loader");
+        function hidePageLoader() {
+            if (!pageLoader) return;
+            document.body.classList.remove("app-loading");
+            document.body.setAttribute("aria-busy", "false");
+            pageLoader.classList.add("is-hidden");
+            window.setTimeout(() => {
+                if (pageLoader && pageLoader.parentNode) {
+                    pageLoader.parentNode.removeChild(pageLoader);
+                }
+            }, 320);
+        }
+
+        function updateLanguageMenuState(activeLang) {
+            const locale = I18N[activeLang] || I18N.fr;
+            const activeBadgeText = getNestedValue(locale, "nav.activeBadge") || "Active";
+            const availableBadgeText = getNestedValue(locale, "nav.availableBadge") || "Available";
+            document.querySelectorAll("[data-lang]").forEach((btn) => {
+                const isActive = btn.getAttribute("data-lang") === activeLang;
+                btn.setAttribute("aria-pressed", isActive ? "true" : "false");
+
+                if (btn.classList.contains("mobile-lang-btn")) {
+                    btn.classList.toggle("bg-blue-50", isActive);
+                    btn.classList.toggle("border-blue-200", isActive);
+                    btn.classList.toggle("text-blue-700", isActive);
+                    btn.classList.toggle("bg-white", !isActive);
+                    btn.classList.toggle("border-gray-200", !isActive);
+                    btn.classList.toggle("text-slate-600", !isActive);
+                }
+
+                const badge = btn.querySelector("span:last-child");
+                if (!badge) return;
+                badge.textContent = isActive ? activeBadgeText : availableBadgeText;
+                badge.className = isActive
+                    ? "text-[11px] px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 border border-blue-100"
+                    : "text-[11px] px-2 py-0.5 rounded-full bg-slate-100 text-slate-500";
+                btn.classList.toggle("bg-blue-50", isActive);
+                btn.classList.toggle("text-blue-700", isActive);
+            });
+        }
+
+        function applyLanguage(langCode) {
+            const locale = I18N[langCode] || I18N.fr;
+            document.documentElement.lang = locale.meta.htmlLang;
+            document.documentElement.dir = locale.meta.dir;
+
+            document.querySelectorAll("[data-i18n]").forEach((el) => {
+                const value = getNestedValue(locale, el.getAttribute("data-i18n"));
+                if (typeof value === "string") el.textContent = value;
+            });
+
+            document.querySelectorAll("[data-i18n-placeholder]").forEach((el) => {
+                const value = getNestedValue(locale, el.getAttribute("data-i18n-placeholder"));
+                if (typeof value === "string") el.setAttribute("placeholder", value);
+            });
+
+            document.querySelectorAll("[data-i18n-alt]").forEach((el) => {
+                const value = getNestedValue(locale, el.getAttribute("data-i18n-alt"));
+                if (typeof value === "string") el.setAttribute("alt", value);
+            });
+
+            document.querySelectorAll("[data-i18n-aria-label]").forEach((el) => {
+                const value = getNestedValue(locale, el.getAttribute("data-i18n-aria-label"));
+                if (typeof value === "string") el.setAttribute("aria-label", value);
+            });
+
+            updateLanguageMenuState(langCode);
+            try { localStorage.setItem("booki_lang", langCode); } catch (_) {}
+        }
+
+        const langMenu = document.querySelector(".lang-menu");
+        const mobileMenuPanel = document.getElementById("mobile-menu-panel");
+        const mobileMenuOverlay = document.getElementById("mobile-menu-overlay");
+        const mobileMenuOpenBtn = document.getElementById("mobile-menu-open");
+        const mobileMenuCloseBtn = document.getElementById("mobile-menu-close");
+        let mobileMenuLastFocus = null;
+
+        function setMobileMenuOpen(isOpen) {
+            if (!mobileMenuPanel || !mobileMenuOverlay) return;
+            document.body.classList.toggle("menu-open", isOpen);
+            mobileMenuPanel.setAttribute("aria-hidden", isOpen ? "false" : "true");
+            mobileMenuOverlay.setAttribute("aria-hidden", isOpen ? "false" : "true");
+            if (mobileMenuOpenBtn) mobileMenuOpenBtn.setAttribute("aria-expanded", isOpen ? "true" : "false");
+
+            if (isOpen) {
+                mobileMenuLastFocus = document.activeElement;
+                setTimeout(() => {
+                    const firstLink = mobileMenuPanel.querySelector("[data-mobile-menu-close]");
+                    if (firstLink) firstLink.focus();
+                }, 0);
+            } else if (mobileMenuLastFocus && typeof mobileMenuLastFocus.focus === "function") {
+                mobileMenuLastFocus.focus();
+            }
+        }
+
+        if (mobileMenuOpenBtn) {
+            mobileMenuOpenBtn.addEventListener("click", () => setMobileMenuOpen(true));
+        }
+        if (mobileMenuCloseBtn) {
+            mobileMenuCloseBtn.addEventListener("click", () => setMobileMenuOpen(false));
+        }
+        if (mobileMenuOverlay) {
+            mobileMenuOverlay.addEventListener("click", () => setMobileMenuOpen(false));
+        }
+        document.querySelectorAll("[data-mobile-menu-close]").forEach((el) => {
+            el.addEventListener("click", () => setMobileMenuOpen(false));
+        });
+        window.addEventListener("resize", () => {
+            if (window.innerWidth >= 768) setMobileMenuOpen(false);
+        });
+
+        if (langMenu) {
+            document.addEventListener("click", (event) => {
+                if (langMenu.open && !langMenu.contains(event.target)) langMenu.open = false;
+            });
+            document.addEventListener("keydown", (event) => {
+                if (event.key === "Escape") {
+                    if (langMenu.open) langMenu.open = false;
+                    setMobileMenuOpen(false);
+                }
+            });
+        }
+
+        document.querySelectorAll("[data-lang]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const lang = btn.getAttribute("data-lang");
+                if (!lang) return;
+                applyLanguage(lang);
+                if (langMenu) langMenu.open = false;
+                setMobileMenuOpen(false);
+            });
+        });
+
+        let initialLang = "fr";
+        try {
+            const savedLang = localStorage.getItem("booki_lang");
+            if (savedLang && I18N[savedLang]) initialLang = savedLang;
+        } catch (_) {}
+
+        applyLanguage(initialLang);
+        lucide.createIcons({ attrs: { "stroke-width": "1.75", "aria-hidden": "true" } });
+
+        if (document.readyState === "complete") {
+            hidePageLoader();
+        } else {
+            window.addEventListener("load", hidePageLoader, { once: true });
+            window.setTimeout(hidePageLoader, 4000);
+        }
+    </script>
+</body></html>

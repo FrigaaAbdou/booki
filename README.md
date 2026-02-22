@@ -125,7 +125,7 @@ Current implementation is production-leaning, but for a stronger production setu
 
 ## Developers
 
-- Abdou Frigaa (Project Owner / Developer)
+- Abdou Frigaa 
 - Mehdi Silem — <https://github.com/MehdiSilem>
 
 ## License
